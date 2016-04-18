@@ -49,6 +49,7 @@
       <runner id="RUNNER_14" name="Build Release" type="simpleRunner">
         <parameters>
           <param name="script.content"><![CDATA[set Configuration=Release
+set KOREBUILD_DOTNET_PACK_OPTIONS="--version-suffix %GitVersion.NuGetVersion%"
 build compile]]></param>
           <param name="teamcity.step.mode" value="default" />
           <param name="use.custom.script" value="true" />
