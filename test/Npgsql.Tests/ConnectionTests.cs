@@ -271,8 +271,9 @@ namespace Npgsql.Tests
 
         [Test]
         [Timeout(10000)]
-        public void ConnectTimeoutAsync()
+        public async Task ConnectTimeoutAsync()
         {
+            Environment.SetEnvironmentVariable("NPGSQL_UNKNOWN_IP", "10.0.0.200");
             var unknownIp = Environment.GetEnvironmentVariable("NPGSQL_UNKNOWN_IP");
             if (unknownIp == null)
                 TestUtil.IgnoreExceptOnBuildServer("NPGSQL_UNKNOWN_IP isn't defined and is required for connection timeout tests");
@@ -285,7 +286,8 @@ namespace Npgsql.Tests
             };
             using (var conn = new NpgsqlConnection(csb))
             {
-                Assert.That(async () => await conn.OpenAsync(), Throws.Exception.TypeOf<TimeoutException>());
+                await conn.OpenAsync();
+                //Assert.That(async () => await conn.OpenAsync(), Throws.Exception.TypeOf<TimeoutException>());
                 Assert.That(conn.State, Is.EqualTo(ConnectionState.Closed));
             }
         }
